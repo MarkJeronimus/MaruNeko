@@ -1,7 +1,5 @@
 package org.digitalmodular.maruneko.diskscanner;
 
-import java.sql.SQLException;
-
 import org.jetbrains.annotations.Nullable;
 
 import static org.digitalmodular.utilities.ValidatorUtilities.requireNonNull;
@@ -70,29 +68,7 @@ public class ProgressTracker {
 		}
 
 		if (lastEntry != null) {
-			StringBuilder path = new StringBuilder(288).append(lastEntry.name());
-
-			try {
-				FileEntry entry = lastEntry;
-				while (entry.parentID() > 0) {
-					entry = database.fileEntryTable.getByID(entry.parentID());
-					if (entry == null) {
-						path.insert(0, "<null>/");
-						break;
-					}
-
-					String name = entry.name();
-					if (name.equals("/")) {
-						path.insert(0, '/');
-					} else {
-						path.insert(0, name + '/');
-					}
-				}
-			} catch (SQLException ex) {
-				path.insert(0, ex.getClass().getSimpleName() + '(' + ex.getMessage() + ")/");
-			}
-
-			System.out.print("\t[" + lastEntry.id() + "] " + path);
+			System.out.print("\t[" + lastEntry.id() + "] " + lastEntry.getFullPath());
 		}
 
 		System.out.println();
