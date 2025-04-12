@@ -29,10 +29,8 @@ public final class FileEntryTable extends AbstractTable<FileEntry> {
 	private final PreparedStatement selectStatementID;
 	private final PreparedStatement deleteStatementID;
 	private final PreparedStatement selectStatementParentID;
-	private final PreparedStatement deleteStatementParentID;
 	private final PreparedStatement selectStatementParentCount;
 	private final PreparedStatement selectStatementParentIDAndName;
-	private final PreparedStatement selectStatementParentIDAndLastSeen;
 	private final PreparedStatement selectStatementNameAndType;
 	private final PreparedStatement selectStatementNameTypeSize;
 	private final PreparedStatement selectStatementVolumeIDFirst;
@@ -61,7 +59,6 @@ public final class FileEntryTable extends AbstractTable<FileEntry> {
 			                        "CONSTRAINT pn UNIQUE (parentID, name)," +
 			                        "FOREIGN KEY (parentID) REFERENCES FileEntry(id)," +
 			                        "FOREIGN KEY (fileTypeID) REFERENCES " + FileTypeTable.TABLE_NAME + "(id))");
-			statement.executeUpdate("CREATE UNIQUE INDEX IF NOT EXISTS ParentIDAndName ON FileEntry (parentID, name)");
 		}
 	}
 
@@ -89,12 +86,6 @@ public final class FileEntryTable extends AbstractTable<FileEntry> {
 		selectStatementParentIDAndName = connection.prepareStatement(
 				"SELECT * FROM FileEntry WHERE IFNULL(parentID,'')=? AND name=?");
 		selectStatementParentIDAndName.setQueryTimeout(Database.QUERY_TIMEOUT);
-		selectStatementParentIDAndLastSeen = connection.prepareStatement(
-				"SELECT * FROM FileEntry WHERE IFNULL(parentID,'')=? AND lastSeenTimestamp<?");
-		selectStatementParentIDAndLastSeen.setQueryTimeout(Database.QUERY_TIMEOUT);
-		deleteStatementParentID = connection.prepareStatement(
-				"DELETE FROM FileEntry WHERE IFNULL(parentID,'')=?");
-		deleteStatementParentID.setQueryTimeout(Database.QUERY_TIMEOUT);
 		selectStatementNameAndType = connection.prepareStatement(
 				"SELECT * FROM FileEntry WHERE name=? AND fileTypeID=?");
 		selectStatementNameAndType.setQueryTimeout(Database.QUERY_TIMEOUT);
@@ -242,27 +233,11 @@ public final class FileEntryTable extends AbstractTable<FileEntry> {
 		return getTableEntries(selectStatementParentID, parentID);
 	}
 
-	public void deleteByParentID(int parentID) throws SQLException {
-		requireAtLeast(0, parentID, "parentID");
-
-		deleteStatementParentID.setObject(1, parentID == 0 ? "" : parentID);
-		deleteStatementParentID.execute();
-		deleteStatementParentID.clearParameters();
-	}
-
 	public @Nullable FileEntry getByParentIDAndName(int parentID, String name) throws SQLException {
 		requireAtLeast(0, parentID, "parentID");
 		requireStringNotEmpty(name, "name");
 
 		return getTableEntry(selectStatementParentIDAndName, parentID == 0 ? "" : parentID, name);
-	}
-
-	public List<FileEntry> getByParentIDAndLastSeenTimestamp(int parentID, long lastSeenTimestamp) throws SQLException {
-		requireAtLeast(0, parentID, "parentID");
-
-		return getTableEntries(selectStatementParentIDAndLastSeen,
-		                       parentID == 0 ? "" : parentID,
-		                       lastSeenTimestamp);
 	}
 
 	public List<FileEntry> getByNameRegex(String query) throws SQLException {

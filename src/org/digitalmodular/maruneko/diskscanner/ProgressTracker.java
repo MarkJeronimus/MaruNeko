@@ -55,9 +55,7 @@ public class ProgressTracker {
 		} else {
 			System.out.print(" files");
 		}
-		System.out.print(" files\t" +
-		                 speed + " files/sec\tscan efficacy=" +
-		                 numFiles * (long)speed / 1000000 + '\t');
+		System.out.print(" files\t" + speed + " files/sec\t");
 
 		if (fileSize > 1099511627776000L) {
 			System.out.print((fileSize >> 40) + " TB");

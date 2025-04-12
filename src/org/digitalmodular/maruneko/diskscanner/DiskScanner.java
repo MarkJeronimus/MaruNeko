@@ -64,14 +64,12 @@ public class DiskScanner {
 	public FileEntry scan(Path start, int maxDepth) throws IOException {
 		Path searchRoot = start.toAbsolutePath();
 
-		long            startTimestamp  = System.currentTimeMillis();
 		ProgressTracker progressTracker = new ProgressTracker(database);
 
 		FileEntry firstEntry = addParents(searchRoot);
 
 		int firstParentID = firstEntry.id();
 		int firstVolumeID = getOrAddVolume(searchRoot).id();
-//		database.commit();
 
 		List<Integer> volumeStack = new ArrayList<>(32);
 		List<Integer> parentStack = new ArrayList<>(32);
@@ -159,10 +157,7 @@ public class DiskScanner {
 			}
 
 			@Override
-			public FileVisitResult postVisitDirectory(Path dir, IOException ex) throws IOException {
-				int parentID = parentStack.get(parentStack.size() - 1);
-				deleteUnscanned(parentID, startTimestamp);
-
+			public FileVisitResult postVisitDirectory(Path dir, IOException ex) {
 				parentStack.remove(parentStack.size() - 1);
 				volumeStack.remove(volumeStack.size() - 1);
 //				System.out.println("<<< volumeStack=" + volumeStack + "\tparentStack=" + parentStack);
@@ -294,34 +289,5 @@ public class DiskScanner {
 			fileType = FileType.OTHER;
 		}
 		return fileType;
-	}
-
-	private void deleteUnscanned(int parentID, long startTimestamp) throws IOException {
-		try {
-			List<FileEntry> orphans = database.fileEntryTable.getByParentIDAndLastSeenTimestamp(parentID,
-			                                                                                    startTimestamp);
-			if (orphans.isEmpty()) {
-				return;
-			}
-
-			for (FileEntry orphan : orphans) {
-				delTree(orphan);
-				database.fileEntryTable.deleteByID(orphan.id());
-			}
-		} catch (SQLException ex) {
-			throw new IOException(ex);
-		}
-	}
-
-	private void delTree(FileEntry entry) throws SQLException {
-		List<FileEntry> children = database.fileEntryTable.getByParentID(entry.id());
-
-		for (FileEntry child : children) {
-			if (child.fileTypeID() == FileType.DIRECTORY.id()) {
-				delTree(child);
-			}
-		}
-
-		database.fileEntryTable.deleteByParentID(entry.id());
 	}
 }
