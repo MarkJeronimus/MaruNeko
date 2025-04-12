@@ -77,8 +77,7 @@ public class DiskScanner {
 		parentStack.add(firstParentID);
 //		System.out.println("### volumeStack=" + volumeStack + "\tparentStack=" + parentStack);
 
-		Files.walkFileTree(searchRoot, EnumSet.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new SimpleFileVisitor<>() {
-			//		Files.walkFileTree(searchRoot, Collections.emptySet(), maxDepth, new SimpleFileVisitor<>() {
+		Files.walkFileTree(searchRoot, Collections.emptySet(), maxDepth, new SimpleFileVisitor<>() {
 			@Override
 			public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) throws IOException {
 				if (dir.equals(searchRoot)) {
@@ -93,16 +92,6 @@ public class DiskScanner {
 
 				int       parentID = parentStack.get(parentStack.size() - 1);
 				FileEntry entry    = addFileEntry(dir, volumeID, parentID, attrs);
-
-				if (entry.fileTypeID() == FileType.SYMLINK.id()) {
-					System.out.println("Skipping symlink " + dir);
-					return FileVisitResult.SKIP_SUBTREE;
-				}
-
-				if (entry.name().endsWith(":")) {
-					System.out.println("Skipping wine root " + dir);
-					return FileVisitResult.SKIP_SUBTREE;
-				}
 
 				if (progressTracker.recordProgress(entry)) {
 					try {
