@@ -1,0 +1,32 @@
+### IntelliJ IDEA ###
+/.idea/workspace.xml
+/.idea/dictionaries/*
+/build/
+/out/
+/release/
+/src/META-INF/
+
+### VS Code ###
+/.history/
+/.vscode/
+
+#OS
+/.DS_Store
+/thumbs.db
+
+#LibreOffice
+.~lock.*
+
+#Generic
+*.log
+*.bak
+/manifests/
+/TEMP
+/TODO
+
+### Mac OS ###
+.DS_Store
+
+#Project-specific
+*.maru
+config.ini
