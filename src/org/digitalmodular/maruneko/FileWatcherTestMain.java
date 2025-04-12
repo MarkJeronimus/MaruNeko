@@ -31,7 +31,7 @@ public class FileWatcherTestMain implements Runnable {
 	}
 
 	private @Nullable WatchService        watchService      = null;
-	private           Map<Path, WatchKey> registeredWatches = new ConcurrentHashMap<>(32);
+	private final     Map<Path, WatchKey> registeredWatches = new ConcurrentHashMap<>(32);
 
 	public FileWatcherTestMain() throws InterruptedException, IOException {
 		Thread thread = new Thread(this);
@@ -41,11 +41,15 @@ public class FileWatcherTestMain implements Runnable {
 		Thread.sleep(1000);
 		addWatch(Paths.get("d:\\"));
 		Thread.sleep(3000);
-		for (WatchKey key : registeredWatches.values())
+		for (WatchKey key : registeredWatches.values()) {
 			System.out.println(key.pollEvents());
+		}
+
 		Thread.sleep(30000);
-		for (WatchKey key : registeredWatches.values())
+		for (WatchKey key : registeredWatches.values()) {
 			System.out.println(key.pollEvents());
+		}
+
 		System.exit(0);
 	}
 
@@ -68,8 +72,9 @@ public class FileWatcherTestMain implements Runnable {
 
 			while (true) {
 				WatchKey key = watchService.take();
-				for (WatchEvent<?> evt : key.pollEvents())
+				for (WatchEvent<?> evt : key.pollEvents()) {
 					handleChange(evt);
+				}
 
 				boolean valid = key.reset();
 			}

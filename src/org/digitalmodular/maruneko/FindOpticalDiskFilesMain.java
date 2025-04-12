@@ -38,21 +38,6 @@ import static org.digitalmodular.maruneko.database.FileType.REGULAR_FILE;
 // Created 2023-11-02
 @SuppressWarnings("CallToPrintStackTrace")
 public final class FindOpticalDiskFilesMain {
-	private enum FindResult {
-		UNINTERESTING(Color.BLACK),
-		NOT_FOUND(Color.RED),
-		FOUND_MULTIPLE(Color.MAGENTA),
-		FOUND_CANDIDATES(Color.ORANGE),
-		FOUND_GOOD_CANDIDATES(Color.YELLOW),
-		EXACT_MATCH(Color.GREEN);
-
-		private final Color color;
-
-		FindResult(Color color) {
-			this.color = color;
-		}
-	}
-
 	private static final Collection<Database> openDatabases = new ArrayList<>(64);
 
 	public static void main(String... args) throws Exception {

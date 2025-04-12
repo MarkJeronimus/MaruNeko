@@ -16,21 +16,6 @@ import org.digitalmodular.maruneko.diskscanner.DiskScanner;
 // Created 2022-11-14
 public class DiskScannerMain {
 	public static void main(String... args) throws IOException, SQLException {
-//		FileSystem     fs    = FileSystems.getDefault();
-//		Iterable<Path> roots = fs.getRootDirectories();
-//		for (FileStore store : fs.getFileStores()) {
-//			Iterator<Path> i = roots.iterator();
-//			while (i.hasNext()) {
-//				if (store.name().startsWith(i.next().toString())) {
-//					System.out.println(
-//							"Name: " + store.name() + ", Read only: " + store.isReadOnly() + ", Type: " + store.type() +
-//							", Block: " + store.getBlockSize() + " Bytes");
-//				}
-//			}
-//		}
-//		System.out.println();
-//		System.out.println();
-
 		scan(Paths.get("/"), Paths.get("root.maru"));
 		scan(Paths.get("/home"), Paths.get("home.maru"));
 	}

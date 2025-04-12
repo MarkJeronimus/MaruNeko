@@ -45,25 +45,13 @@ public class ProgressTracker {
 		return false;
 	}
 
-	public boolean recordDummy() {
-		numFiles++;
-		lastEntry = new FileEntry(database, 1, 0, "/", 1, 1, 0, 0, 0, 0, 0, 0);
-
-		if (System.currentTimeMillis() - nextDumpTimestamp > 0) {
-			dumpProgress();
-			return true;
-		}
-
-		return false;
-	}
-
 	@SuppressWarnings("UseOfSystemOutOrSystemErr")
 	public void dumpProgress() {
 		int speed = numFiles - lastNumFiles;
 
 		System.out.print(numFiles);
 		if (total > 0) {
-			System.out.printf("/%d files (%.1f%%)", total, numFiles *100.0f / total);
+			System.out.printf("/%d files (%.1f%%)", total, numFiles * 100.0f / total);
 		} else {
 			System.out.print(" files");
 		}

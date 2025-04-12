@@ -42,13 +42,15 @@ public class StatUtils {
 			process = Runtime.getRuntime().exec(new String[]{"stat", "--printf=%h", "\"" + filePath + "\""});
 
 			int exitValue = process.waitFor();
-			if (exitValue != 0)
+			if (exitValue != 0) {
 				return 1;
+			}
 
 			in = new BufferedReader(new InputStreamReader(process.getInputStream()));
 			String inpMsg = in.readLine();
-			if (inpMsg == null)
+			if (inpMsg == null) {
 				return 1;
+			}
 
 			return Integer.parseInt(inpMsg);
 		} catch (NumberFormatException e) {

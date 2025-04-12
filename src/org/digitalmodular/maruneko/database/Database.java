@@ -66,7 +66,7 @@ public class Database {
 
 			volumeTable = new VolumeTable(connection);
 			fileTypeTable = new FileTypeTable(connection);
-			fileEntryTable = new FileEntryTable(this,connection, fileTypeTable);
+			fileEntryTable = new FileEntryTable(this, connection, fileTypeTable);
 		} finally {
 			connection.commit();
 		}

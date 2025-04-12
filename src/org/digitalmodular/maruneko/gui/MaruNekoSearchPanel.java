@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.NumberFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -22,8 +21,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ForkJoinPool;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -65,14 +62,8 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 	private static final ImageIcon REGULAR_FILE_ICON = new ImageIcon("material-file-24.png");
 	private static final ImageIcon SYMLINK_ICON      = new ImageIcon("material-symlink-24.png");
 	private static final ImageIcon OTHER_ICON        = new ImageIcon("material-question-24.png");
-	private static final ImageIcon ERROR_ICON        = new ImageIcon("material-error-24.png");
 
-	private static final NumberFormat      SIZE_FORMAT      = NumberFormat.getNumberInstance();
-	private static final DateTimeFormatter TIME_FORMAT      = DateTimeFormatter.ISO_DATE_TIME;
-	private static final Pattern           SPACE_SPLITTER   = Pattern.compile("(?<!\\\\) ");
-	private static final Pattern           REGEXIFY_PATTERN = Pattern.compile("[.*+?^${}()|\\[\\]\\\\]");
-	private static final Pattern           QUESTION_PATTERN = Pattern.compile("\\\\\\?");
-	private static final Pattern           ASTERISK_PATTERN = Pattern.compile("\\\\\\*");
+	private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ISO_DATE_TIME;
 
 	private final MaruNekoController controller;
 
@@ -291,25 +282,6 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 		searchField.selectAll();
 	}
 
-	private static boolean isProbablyRegex(String query) {
-		try {
-			Pattern.compile(query);
-		} catch (PatternSyntaxException ignored) {
-			return false;
-		}
-
-		if (query.indexOf('\\') >= 0 || query.contains(".*") || query.contains(".?") ||
-		    query.contains("[") || query.contains("]") || query.contains("{") || query.contains("}")) {
-			return true;
-		}
-
-		if (query.length() > 2 && query.startsWith("^") && query.endsWith("$")) {
-			return true;
-		}
-
-		return false;
-	}
-
 	private void openLocation(String name, boolean forceFolder) {
 		if (name.startsWith("//")) {
 			name = "/media/zom-b" + name.substring(1);
@@ -451,11 +423,6 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 		} else {
 			return OTHER_ICON;
 		}
-	}
-
-	private static String humanSize(long size) {
-//		return SIZE_FORMAT.format(size);
-		return Long.toString(size);
 	}
 
 	private static String humanTime(long epochTime) {

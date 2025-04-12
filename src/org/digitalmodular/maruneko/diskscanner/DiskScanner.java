@@ -77,7 +77,7 @@ public class DiskScanner {
 		List<Integer> parentStack = new ArrayList<>(32);
 		volumeStack.add(firstVolumeID);
 		parentStack.add(firstParentID);
-		System.out.println("### volumeStack=" + volumeStack + "\tparentStack=" + parentStack);
+//		System.out.println("### volumeStack=" + volumeStack + "\tparentStack=" + parentStack);
 
 		Files.walkFileTree(searchRoot, EnumSet.of(FileVisitOption.FOLLOW_LINKS), maxDepth, new SimpleFileVisitor<>() {
 			//		Files.walkFileTree(searchRoot, Collections.emptySet(), maxDepth, new SimpleFileVisitor<>() {
@@ -149,7 +149,7 @@ public class DiskScanner {
 
 					addFileEntry(file, volumeID, parentID, null);
 				} else if (ex instanceof FileSystemLoopException) {
-					System.out.println("Skipping FileSystem Loop " + file);
+					System.out.println("Skipping FileSystem loop " + file);
 					return FileVisitResult.CONTINUE;
 				} else {
 					breakpoint();
