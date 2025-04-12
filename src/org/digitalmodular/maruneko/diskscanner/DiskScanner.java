@@ -94,18 +94,6 @@ public class DiskScanner {
 				int       parentID = parentStack.get(parentStack.size() - 1);
 				FileEntry entry    = addFileEntry(dir, volumeID, parentID, attrs);
 
-				volumeStack.add(volumeID);
-				parentStack.add(entry.id());
-//				System.out.println(">>> volumeStack=" + volumeStack + "\tparentStack=" + parentStack);
-
-				if (progressTracker.recordProgress(entry)) {
-					try {
-						database.commit();
-					} catch (SQLException ex) {
-						throw new IOException(ex);
-					}
-				}
-
 				if (entry.fileTypeID() == FileType.SYMLINK.id()) {
 					System.out.println("Skipping symlink " + dir);
 					return FileVisitResult.SKIP_SUBTREE;
@@ -115,6 +103,18 @@ public class DiskScanner {
 					System.out.println("Skipping wine root " + dir);
 					return FileVisitResult.SKIP_SUBTREE;
 				}
+
+				if (progressTracker.recordProgress(entry)) {
+					try {
+						database.commit();
+					} catch (SQLException ex) {
+						throw new IOException(ex);
+					}
+				}
+
+				volumeStack.add(volumeID);
+				parentStack.add(entry.id());
+//				System.out.println(">>> volumeStack=" + volumeStack + "\tparentStack=" + parentStack);
 
 				return FileVisitResult.CONTINUE;
 			}
