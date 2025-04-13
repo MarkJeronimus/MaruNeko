@@ -89,7 +89,7 @@ public class DiskScanner {
 
 				int volumeID = getOrAddVolume(dir).id();
 				if (volumeID != firstVolumeID) {
-					System.out.println("Skipping root " + dir);
+					System.out.println("Skipping root " + dir + " (volumeID = " + volumeID + ')');
 					return FileVisitResult.SKIP_SUBTREE;
 				}
 
