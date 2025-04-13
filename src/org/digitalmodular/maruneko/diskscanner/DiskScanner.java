@@ -29,12 +29,12 @@ import org.digitalmodular.maruneko.database.Volume;
  */
 // Created 2022-11-14
 public class DiskScanner {
-	private final Database database;
-
 	public static void breakpoint() {
 		//noinspection CallToThreadYield
 		Thread.yield();
 	}
+
+	private final Database database;
 
 	public DiskScanner(Database database) {
 		this.database = requireNonNull(database, "database");
