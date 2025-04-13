@@ -69,6 +69,8 @@ public class DiskScanner {
 		int firstParentID = firstEntry.id();
 		int firstVolumeID = getOrAddVolume(searchRoot).id();
 
+		System.out.println("firstVolumeID = " + firstVolumeID);
+
 		List<Integer> volumeStack = new ArrayList<>(32);
 		List<Integer> parentStack = new ArrayList<>(32);
 		volumeStack.add(firstVolumeID);
@@ -84,13 +86,14 @@ public class DiskScanner {
 
 				int volumeID = getOrAddVolume(dir).id();
 				if (volumeID != firstVolumeID) {
-					System.out.println("Skipping root " + dir + " (volumeID = " + volumeID + ')');
+					System.out.println("Skipping root " + dir + " (firstVolumeID = " + volumeID + ')');
 					return FileVisitResult.SKIP_SUBTREE;
 				}
 
 				int       parentID = parentStack.get(parentStack.size() - 1);
 				FileEntry entry    = addFileEntry(dir, volumeID, parentID, attrs);
 
+				// FIXME: Don't rely on progress tracker for core logic
 				if (progressTracker.recordProgress(entry)) {
 					try {
 						database.commit();
@@ -113,6 +116,7 @@ public class DiskScanner {
 
 				FileEntry entry = addFileEntry(file, volumeID, parentID, attrs);
 
+				// FIXME: Don't rely on progress tracker for core logic
 				if (progressTracker.recordProgress(entry)) {
 					try {
 						database.commit();
@@ -153,7 +157,7 @@ public class DiskScanner {
 			}
 		});
 
-		progressTracker.dumpProgress();
+		progressTracker.recordDone();
 		try {
 			database.commit();
 		} catch (SQLException ex) {

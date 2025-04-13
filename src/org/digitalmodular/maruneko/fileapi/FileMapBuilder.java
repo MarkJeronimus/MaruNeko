@@ -41,7 +41,7 @@ public class FileMapBuilder {
 		FileNode root = new FileNode(volume, start, null);
 
 		ProgressTracker progressTracker = new ProgressTracker();
-		progressTracker.setTotal(database.fileEntryTable.getMaxID());
+		progressTracker.setTotalSizeTarget(database.fileEntryTable.getMaxID());
 
 		addChildren(volume, root, start, progressTracker);
 

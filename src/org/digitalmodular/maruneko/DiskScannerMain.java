@@ -29,9 +29,7 @@ public class DiskScannerMain {
 
 		FileEntry firstEntry = new DiskScanner(database).scan(start);
 
-		System.out.println();
-		System.out.println("firstEntry = " + firstEntry);
-		System.out.println("start      = " + start);
-		System.out.println("maruFile   = " + maruFile);
+		System.out.println("Done:");
+		System.out.println(firstEntry);
 	}
 }
