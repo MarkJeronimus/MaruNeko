@@ -29,6 +29,7 @@ package org.digitalmodular.maruneko.diskscanner;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Mark Jeronimus
@@ -39,14 +40,14 @@ public class StatUtils {
 		Process        process = null;
 		BufferedReader in      = null;
 		try {
-			process = Runtime.getRuntime().exec(new String[]{"stat", "--printf=%h", "\"" + filePath + "\""});
+			process = Runtime.getRuntime().exec(new String[]{"stat", "--printf=%h", '"' + filePath + '"'});
 
 			int exitValue = process.waitFor();
 			if (exitValue != 0) {
 				return 1;
 			}
 
-			in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+			in = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
 			String inpMsg = in.readLine();
 			if (inpMsg == null) {
 				return 1;

@@ -134,6 +134,7 @@ public class FileNode {
 		children.clear();
 	}
 
+	@SuppressWarnings("TailRecursion") // Let each object modify itself (hence more logical with recursion)
 	private void addSizes(int childLargestSubtree, long fileSize, long fileSizeOnDisk) {
 		treeSize++;
 		largestSubtree = Math.max(largestSubtree, childLargestSubtree);
