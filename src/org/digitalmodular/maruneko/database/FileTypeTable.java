@@ -53,6 +53,7 @@ public final class FileTypeTable extends AbstractTable<FileType> {
 	}
 
 	private void addDefaults() throws SQLException {
+		addValue(FileType.UNKNOWN);
 		addValue(FileType.DIRECTORY);
 		addValue(FileType.REGULAR_FILE);
 		addValue(FileType.SYMLINK);

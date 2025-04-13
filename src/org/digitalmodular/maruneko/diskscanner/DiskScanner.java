@@ -257,21 +257,12 @@ public class DiskScanner {
 	private static FileType getFileType(@Nullable BasicFileAttributes attrs) {
 		FileType fileType;
 		if (attrs == null) {
-			fileType = FileType.DIRECTORY;
+			fileType = FileType.UNKNOWN;
 		} else if (attrs.isDirectory()) {
-			if (attrs.isRegularFile() || attrs.isSymbolicLink() || attrs.isOther()) {
-				breakpoint();
-			}
 			fileType = FileType.DIRECTORY;
 		} else if (attrs.isRegularFile()) {
-			if (attrs.isSymbolicLink() || attrs.isOther()) {
-				breakpoint();
-			}
 			fileType = FileType.REGULAR_FILE;
 		} else if (attrs.isSymbolicLink()) {
-			if (attrs.isOther()) {
-				breakpoint();
-			}
 			fileType = FileType.SYMLINK;
 		} else if (attrs.isOther()) {
 			fileType = FileType.OTHER;

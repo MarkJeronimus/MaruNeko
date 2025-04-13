@@ -35,7 +35,7 @@ public record FileEntry(Database database,
 		requireAtLeast(0, parentID, "parentID");
 		requireStringLengthAtLeast(1, name, "name");
 		requireAtLeast(1, volumeID, "volumeID");
-		requireAtLeast(1, fileTypeID, "fileTypeID");
+		requireAtLeast(0, fileTypeID, "fileTypeID");
 		requireAtLeast(0, size, "size");
 	}
 
