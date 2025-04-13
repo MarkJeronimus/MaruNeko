@@ -1,9 +1,10 @@
 package org.digitalmodular.maruneko.diskscanner;
 
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 import org.jetbrains.annotations.Nullable;
 
+import org.digitalmodular.utilities.FormatterUtilities;
 import org.digitalmodular.utilities.math.FileSizeFormatter;
 import static org.digitalmodular.utilities.ValidatorUtilities.requireAtLeast;
 import static org.digitalmodular.utilities.ValidatorUtilities.requireNonNull;
@@ -15,6 +16,8 @@ import org.digitalmodular.maruneko.database.FileEntry;
  */
 // Created 2022-11-16
 public class ProgressTracker {
+	public static final NumberFormat FILESIZE_FORMATTER = FormatterUtilities.getFixedPrecisionFormatter(4);
+
 	/**
 	 * A value of 0 means no known target, and renders the progress as indeterminate.
 	 */
@@ -84,7 +87,7 @@ public class ProgressTracker {
 		float speed = numFilesDelta * 1000.0f / elapsedMillis;
 		System.out.printf("\t%.1f files/sec", speed);
 
-		System.out.print(FileSizeFormatter.formatFilesize(totalSize, new DecimalFormat("\t0.# "), true));
+		System.out.print('\t' + FileSizeFormatter.formatFilesize(totalSize, FILESIZE_FORMATTER, true));
 
 		if (lastEntry != null) {
 			System.out.print('\t' + lastEntry.getFullPath());
