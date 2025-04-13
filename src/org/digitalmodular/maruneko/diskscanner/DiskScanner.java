@@ -3,7 +3,6 @@ package org.digitalmodular.maruneko.diskscanner;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.nio.file.FileSystemLoopException;
-import java.nio.file.FileVisitOption;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -14,7 +13,6 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
@@ -64,7 +62,7 @@ public class DiskScanner {
 	public FileEntry scan(Path start, int maxDepth) throws IOException {
 		Path searchRoot = start.toAbsolutePath();
 
-		ProgressTracker progressTracker = new ProgressTracker(database);
+		ProgressTracker progressTracker = new ProgressTracker();
 
 		FileEntry firstEntry = addParents(searchRoot);
 
