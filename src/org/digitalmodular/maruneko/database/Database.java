@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.regex.Pattern;
 
 import org.digitalmodular.utilities.FileUtilities;
+import static org.digitalmodular.utilities.ValidatorUtilities.requireNonNull;
 
 import org.sqlite.Function;
 import org.sqlite.SQLiteConfig;
@@ -23,6 +24,7 @@ import org.sqlite.SQLiteDataSource;
 public class Database {
 	public static final int QUERY_TIMEOUT = 1;
 
+	private final Path       file;
 	private final Connection connection;
 
 	public final VolumeTable    volumeTable;
@@ -30,6 +32,7 @@ public class Database {
 	public final FileEntryTable fileEntryTable;
 
 	public Database(Path file, boolean forWriting) throws IOException, SQLException {
+		this.file = requireNonNull(file, "file");
 		System.out.println("Opening Database " + file);
 
 		if (forWriting) {
@@ -101,5 +104,10 @@ public class Database {
 
 	public void close() throws SQLException {
 		connection.close();
+	}
+
+	@Override
+	public String toString() {
+		return file.toString();
 	}
 }
