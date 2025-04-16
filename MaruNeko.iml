@@ -14,13 +14,12 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../$lib/sqlite-jdbc/sqlite-jdbc-3.36.0.3.jar!/" />
-          <root url="jar://$MODULE_DIR$/../$lib/sqlite-jdbc/sqlite-jdbc-3.41.2.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/../$lib/sqlite-jdbc/sqlite-jdbc-3.36.0.3.zip!/" />
+          <root url="jar://$MODULE_DIR$/../sqlite-jdbc-3.36.0.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/../sqlite-jdbc-3.36.0.3.zip!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/../$lib/sqlite-jdbc/sqlite-jdbc-3.36.0.3.zip!/sqlite-jdbc-3.36.0.3/src/main/java" />
+          <root url="jar://$MODULE_DIR$/../sqlite-jdbc-3.36.0.3.zip!/sqlite-jdbc-3.36.0.3/src/main/java" />
         </SOURCES>
       </library>
     </orderEntry>
