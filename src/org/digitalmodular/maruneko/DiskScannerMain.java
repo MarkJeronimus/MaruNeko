@@ -22,7 +22,7 @@ public class DiskScannerMain {
 
 	private static void scan(Path start, Path maruFile) throws IOException, SQLException {
 		if (Files.exists(maruFile)) {
-			Files.delete(maruFile);
+			Files.move(maruFile, Paths.get(maruFile + ".bak"));
 		}
 
 		Database database = new Database(maruFile, true);

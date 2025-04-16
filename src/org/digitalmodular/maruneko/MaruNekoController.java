@@ -9,6 +9,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -40,12 +42,12 @@ public class MaruNekoController {
 	}
 
 	public synchronized void openDatabase(Path file) {
-		if (openDatabases.containsKey(file)) {
-			System.out.println("Database " + file + " already opened");
-			return;
-		}
+		Future<?> future = executor.submit(() -> {
+			if (openDatabases.containsKey(file)) {
+				System.out.println("Database " + file + " already opened");
+				return;
+			}
 
-		executor.submit(() -> {
 			try {
 				Database database = new Database(file, false);
 				openDatabases.put(file, database);
@@ -67,10 +69,16 @@ public class MaruNekoController {
 				}
 			}
 		});
+
+		try {
+			future.get();
+		} catch (InterruptedException | ExecutionException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public synchronized void closeDatabases() {
-		executor.submit(() -> {
+		Future<?> future = executor.submit(() -> {
 			for (Map.Entry<Path, Database> entry : openDatabases.entrySet()) {
 				Path               path     = entry.getKey();
 				@Nullable Database database = entry.getValue();
@@ -89,6 +97,12 @@ public class MaruNekoController {
 
 			openDatabases.clear();
 		});
+
+		try {
+			future.get();
+		} catch (InterruptedException | ExecutionException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	private static int findProbableRootNode(Database database) throws IOException, SQLException {

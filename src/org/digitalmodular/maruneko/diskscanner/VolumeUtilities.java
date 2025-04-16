@@ -19,6 +19,9 @@ import org.digitalmodular.maruneko.database.Volume;
  */
 // Created 2022-11-15
 public final class VolumeUtilities {
+	@SuppressWarnings("StaticCollection") // Is unmodifiable
+	private static final List<String> MOUNT_POINTS = listMountPoints();
+
 	private VolumeUtilities() {
 		throw new AssertionError();
 	}
@@ -63,7 +66,7 @@ public final class VolumeUtilities {
 	}
 
 	private static String findMountPoint(String fullPath) throws IOException {
-		for (String mountPoint : listMountPoints()) {
+		for (String mountPoint : MOUNT_POINTS) {
 			if (fullPath.startsWith(mountPoint)) {
 				return mountPoint;
 			}
@@ -72,7 +75,7 @@ public final class VolumeUtilities {
 		throw new IOException("Mount point not found: " + fullPath);
 	}
 
-	public static List<String> listMountPoints() {
+	private static List<String> listMountPoints() {
 		Iterable<FileStore> fileStores = FileSystems.getDefault().getFileStores();
 
 		List<String> mountPoints = new ArrayList<>(64);

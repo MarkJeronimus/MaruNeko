@@ -229,7 +229,7 @@ public final class FindOpticalDiskFilesMain {
 		    lowerName.contains("applauzen") ||
 		    lowerName.endsWith(".bmp") ||
 		    lowerName.endsWith(".css") ||
-//		    lowerName.endsWith(".doc") ||
+		    //lowerName.endsWith(".doc") ||
 		    lowerName.endsWith(".htm") ||
 		    lowerName.endsWith(".jpg") ||
 		    lowerName.endsWith(".m3u") ||
@@ -424,19 +424,19 @@ public final class FindOpticalDiskFilesMain {
 							run++;
 						} else {
 							if (maxRun < run) {
-								maxRun = run;
+								maxRun    = run;
 								maxRunAt1 = runStart1;
 								maxRunAt2 = runStart2;
 							}
 							runStart1 = s1i + 1;
 							runStart2 = s2i + 1;
-							run = 0;
+							run       = 0;
 						}
 					}
 				}
 
 				if (maxRun < run) {
-					maxRun = run;
+					maxRun    = run;
 					maxRunAt1 = runStart1;
 					maxRunAt2 = runStart2;
 				}

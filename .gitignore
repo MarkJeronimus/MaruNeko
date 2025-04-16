@@ -28,5 +28,6 @@
 .DS_Store
 
 #Project-specific
+*.config
 *.maru
 config.ini

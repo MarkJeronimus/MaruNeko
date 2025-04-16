@@ -48,7 +48,7 @@ public class ProgressTracker {
 		if (elapsed >= 1000) {
 			dumpProgress(elapsed, numFiles - lastDumpNumFiles);
 			lastDumpTimestamp = now;
-			lastDumpNumFiles = numFiles;
+			lastDumpNumFiles  = numFiles;
 			return true;
 		}
 
@@ -61,7 +61,7 @@ public class ProgressTracker {
 
 		dumpProgress(elapsed, numFiles - lastDumpNumFiles);
 		lastDumpTimestamp = now;
-		lastDumpNumFiles = numFiles;
+		lastDumpNumFiles  = numFiles;
 	}
 
 	private int getElapsed(long now) {

@@ -43,7 +43,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 
-import org.digitalmodular.utilities.ConfigManager;
+import org.digitalmodular.utilities.ConfigurationFile;
 import org.digitalmodular.utilities.FileUtilities;
 import org.digitalmodular.utilities.graphics.swing.table.IconTableCellRenderer;
 import org.digitalmodular.utilities.graphics.swing.table.MutableTableModel;
@@ -84,10 +84,21 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 	};
 	private final TableRowSorter<MutableTableModel> sorter      = new TableRowSorter<>(tableModel);
 
+	private final ConfigurationFile config = new ConfigurationFile("MaruNeko.config");
+
 	@SuppressWarnings("OverridableMethodCallDuringObjectConstruction")
 	public MaruNekoSearchPanel(MaruNekoController controller) {
 		super(new BorderLayout());
 		this.controller = requireNonNull(controller, "controller");
+
+		config.setDefault("lastDir", ".");
+		config.setDefault("LastSearch", "");
+		config.setDefault("RecentMaruFileCount", "0");
+		try {
+			config.load();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 
 		JPanel topPanel = new JPanel(new BorderLayout());
 		topPanel.add(loadButton, BorderLayout.LINE_START);
@@ -96,7 +107,7 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 		add(scroll, BorderLayout.CENTER);
 		scroll.setViewportView(table);
 
-		searchField.setText(ConfigManager.getValue("LastSearch", ""));
+		searchField.setText(config.get("LastSearch"));
 
 		loadButton.addActionListener(ignored -> askFiles());
 		searchField.addActionListener(ignored -> search());
@@ -209,7 +220,7 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 	}
 
 	private void askFiles() {
-		File lastDir = new File(ConfigManager.getValue("lastDir", "."));
+		File lastDir = new File(config.get("lastDir"));
 
 		List<File> files = FileUtilities.askFilesForLoading(this, lastDir, "Select Maru files", "sqlite", "maru");
 		if (files.isEmpty()) {
@@ -220,21 +231,26 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 
 		for (int i = 0; i < files.size(); i++) {
 			//noinspection StringConcatenationMissingWhitespace
-			ConfigManager.setValue("RecentMaruFile" + i, files.get(i).toString());
+			config.set("RecentMaruFile" + i, files.get(i).toString());
 		}
 
-		ConfigManager.setIntValue("RecentMaruFileCount", files.size());
-		ConfigManager.save();
+		config.set("RecentMaruFileCount", String.valueOf(files.size()));
+		try {
+			config.save();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	private void loadRecentFiles() {
-		int n = ConfigManager.getIntValue("RecentMaruFileCount", 0);
+		int n = config.getInt("RecentMaruFileCount");
 
 		List<File> recents = new ArrayList<>(n);
 
 		for (int i = 0; i < n; i++) {
 			//noinspection StringConcatenationMissingWhitespace
-			String recent = ConfigManager.getValue("RecentMaruFile" + i, "");
+			config.setDefault("RecentMaruFile" + i, "");
+			String recent = config.get("RecentMaruFile" + i);
 
 			if (!recent.isEmpty()) {
 				File file = new File(recent);
@@ -252,12 +268,12 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 
 		tableModel.clear();
 
-		ForkJoinPool.commonPool().submit(controller::closeDatabases).join();
+		controller.closeDatabases();
 
 		for (File file : filesToOpen) {
 			Path path = file.toPath();
 
-			ForkJoinPool.commonPool().submit(() -> controller.openDatabase(path));
+			controller.openDatabase(path);
 		}
 
 		searchField.requestFocusInWindow();
@@ -273,8 +289,12 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 
 		searchField.setText(regex);
 
-		ConfigManager.setValue("LastSearch", regex);
-		ConfigManager.save();
+		config.set("LastSearch", regex);
+		try {
+			config.save();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
 
 		clearSearchResults();
 

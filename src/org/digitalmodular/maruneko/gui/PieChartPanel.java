@@ -96,14 +96,14 @@ public class PieChartPanel extends JPanel implements MouseListener, MouseMotionL
 		      double fromAngle,
 		      double angleSpan,
 		      Color3f hsl) {
-			this.fileNode = fileNode;
-			this.x = x;
-			this.y = y;
-			this.radius1 = radius1;
-			this.radius2 = radius2;
+			this.fileNode  = fileNode;
+			this.x         = x;
+			this.y         = y;
+			this.radius1   = radius1;
+			this.radius2   = radius2;
 			this.fromAngle = requireNotDegenerate(fromAngle, "fromAngle");
 			this.angleSpan = requireNotDegenerate(angleSpan, "angleSpan");
-			this.hsl = hsl;
+			this.hsl       = hsl;
 		}
 	}
 
@@ -592,7 +592,6 @@ public class PieChartPanel extends JPanel implements MouseListener, MouseMotionL
 	}
 
 	private static void delete(FileNode fileNode) {
-		//noinspection ParameterNameDiffersFromOverriddenParameter
 		for (FileNode child : fileNode.getChildren()) {
 			delete(child);
 			System.out.println(child.getFileEntry().name());
