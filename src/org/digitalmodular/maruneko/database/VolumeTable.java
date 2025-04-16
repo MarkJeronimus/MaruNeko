@@ -75,7 +75,7 @@ public final class VolumeTable extends AbstractTable<Volume> {
 		long   lastSeenTimestamp  = value.lastSeenTimestamp();
 
 		if (id == 0) {
-			id = getMaxID(0) + 1;
+			id    = getMaxID(0) + 1;
 			value = new Volume(id, mountPoint, device, fileSystem, blockSize, firstSeenTimestamp, lastSeenTimestamp);
 		}
 

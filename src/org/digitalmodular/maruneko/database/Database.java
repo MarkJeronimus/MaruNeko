@@ -67,8 +67,8 @@ public class Database {
 			FileTypeTable.createTable(connection);
 			FileEntryTable.createTable(connection);
 
-			volumeTable = new VolumeTable(connection);
-			fileTypeTable = new FileTypeTable(connection);
+			volumeTable    = new VolumeTable(connection);
+			fileTypeTable  = new FileTypeTable(connection);
 			fileEntryTable = new FileEntryTable(this, connection, fileTypeTable);
 		} finally {
 			connection.commit();

@@ -27,7 +27,7 @@ public abstract class AbstractTable<V> {
 
 	protected AbstractTable(Connection connection, String tableName) throws SQLException {
 		this.connection = requireNonNull(connection, "connection");
-		this.tableName = requireStringLengthAtLeast(1, tableName, "tableName");
+		this.tableName  = requireStringLengthAtLeast(1, tableName, "tableName");
 
 		selectAllStatement = connection.prepareStatement("SELECT * FROM " + tableName);
 		selectAllStatement.setQueryTimeout(Database.QUERY_TIMEOUT);
@@ -126,6 +126,7 @@ public abstract class AbstractTable<V> {
 			Object parameter = parameters[i];
 			selectStatement.setObject(i + 1, parameter);
 		}
+
 		@Nullable V result = null;
 
 		try (ResultSet resultSet = selectStatement.executeQuery()) {

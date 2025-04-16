@@ -45,22 +45,7 @@ public class SpaceAnalyzerMain extends JPanel {
 
 		try {
 //			FileDataFacade fileData = new FileDataFacade(Paths.get("root.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("home.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("nasu.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("naz.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("nas.maru"));
-
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Cecile-muziek.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Cecile-Systeem.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Cecile-werk.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Cecile-hutspot.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Cecile-rommel.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Cecile-film.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Cecile-Elements.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Cecile-USB-HDD.maru"));
-
-			FileDataFacade fileData = new FileDataFacade(Paths.get("Dump-Packard Bell.maru"));
-//			FileDataFacade fileData = new FileDataFacade(Paths.get("Dump-DATA.maru"));
+			FileDataFacade fileData = new FileDataFacade(Paths.get("home.maru"));
 
 			visualizer = new PieChartPanel(fileData);
 			Rectangle bounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();

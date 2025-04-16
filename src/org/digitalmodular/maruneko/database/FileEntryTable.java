@@ -64,7 +64,7 @@ public final class FileEntryTable extends AbstractTable<FileEntry> {
 
 	public FileEntryTable(Database database, Connection connection, FileTypeTable fileTypeTable) throws SQLException {
 		super(connection, TABLE_NAME);
-		this.database = requireNonNull(database, "database");
+		this.database      = requireNonNull(database, "database");
 		this.fileTypeTable = requireNonNull(fileTypeTable, "fileTypeTable");
 
 		insertStatement = connection.prepareStatement("REPLACE INTO FileEntry VALUES (?,?,?,?,?,?,?,?,?,?,?)");

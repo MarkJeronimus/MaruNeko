@@ -72,7 +72,7 @@ public final class VolumeUtilities {
 		throw new IOException("Mount point not found: " + fullPath);
 	}
 
-	public static List<String> listMountPoints() {
+	private static List<String> listMountPoints() {
 		Iterable<FileStore> fileStores = FileSystems.getDefault().getFileStores();
 
 		List<String> mountPoints = new ArrayList<>(64);

@@ -89,13 +89,13 @@ public class FileNode {
 	private long fileSizeOnDiskOfTree = 0;
 
 	public FileNode(Volume volume, FileEntry fileEntry, @Nullable FileNode parent) {
-		this.volume = requireNonNull(volume, "volume");
+		this.volume    = requireNonNull(volume, "volume");
 		this.fileEntry = requireNonNull(fileEntry, "fileEntry");
-		this.parent = parent;
+		this.parent    = parent;
 
-		fileSize = fileEntry.size();
-		fileSizeOnDisk = calcClusterSize(fileEntry.size(), volume.blockSize());
-		fileSizeOfTree = fileSize;
+		fileSize             = fileEntry.size();
+		fileSizeOnDisk       = calcClusterSize(fileEntry.size(), volume.blockSize());
+		fileSizeOfTree       = fileSize;
 		fileSizeOnDiskOfTree = fileSizeOnDisk;
 	}
 
