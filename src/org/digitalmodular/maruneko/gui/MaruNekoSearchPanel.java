@@ -252,12 +252,12 @@ public class MaruNekoSearchPanel extends JPanel implements DatabaseResultsListen
 
 		tableModel.clear();
 
-		ForkJoinPool.commonPool().submit(controller::closeDatabases).join();
+		controller.closeDatabases();
 
 		for (File file : filesToOpen) {
 			Path path = file.toPath();
 
-			ForkJoinPool.commonPool().submit(() -> controller.openDatabase(path));
+			controller.openDatabase(path);
 		}
 
 		searchField.requestFocusInWindow();
